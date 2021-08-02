@@ -17,27 +17,22 @@ nav {
   margin-right: 25em;
 }
 
-h1 {
+h1,
+h2 {
   color: rgb(85, 84, 84);
   font-weight: 600;
 }
 
-h2 {
+h3 {
+  color: rgb(85, 84, 84);
+  font-weight: 500;
+}
+
+.link {
+  color: #01c4e9;
   font-weight: 400;
 }
 
 a {
   text-decoration: none;
-}
-
-a:visited {
-  color: #01c4e9;
-}
-
-a:hover {
-  color: #01c4e9;
-}
-
-a:active {
-  color: #01c4e9;
 }
