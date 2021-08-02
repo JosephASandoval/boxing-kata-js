@@ -15,6 +15,7 @@ function App() {
         <Route exact path="/">
           <StarterBoxes />
         </Route>
+
         <Route path="/refill">
           <RefillBoxes />
         </Route>

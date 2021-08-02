@@ -7,9 +7,23 @@ body {
 
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 0 10px;
-  box-shadow: 0px 2px 10px -5px rgba(21, 6, 5, 1);
+}
+
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  margin-right: 25em;
+}
+
+h1 {
+  color: rgb(85, 84, 84);
+  font-weight: 600;
+}
+
+h2 {
+  font-weight: 400;
 }
 
 a {

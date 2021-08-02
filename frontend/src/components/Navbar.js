@@ -5,11 +5,11 @@ function Navbar() {
   return (
     <nav>
       <Link to="/">
-        <h3>Starter Boxes</h3>
+        <h2>Starter Boxes</h2>
       </Link>
 
       <Link to="/refill">
-        <h3>Refill Boxes</h3>
+        <h2>Refill Boxes</h2>
       </Link>
     </nav>
   );
