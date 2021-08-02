@@ -1,27 +1,36 @@
 import React, { useContext } from "react";
-// import Boxes from "../components/Boxes"
+import PropTypes from "prop-types";
 import { Context } from "../Context";
+import useColorCount from "../hooks/useColorCount";
 
 function RefillBoxes() {
-  const { numBrushes, numRefill } = useContext(Context);
+  const { numBrushes, numRefill, family } = useContext(Context);
+  const { colorCount } = useColorCount();
 
   return (
     <div>
       <h1>Refill Boxes</h1>
       <h2>Summary:</h2>
-      <div className="summary"> {/* apply styling here */}
+      <div className="summary">
         <h3>Refill Boxes: {numRefill ? numRefill : null}</h3>
         <h3>Replacement Heads: {numBrushes ? numBrushes : null}</h3>
       </div>
 
       <h1>Boxes:</h1>
       <div className="boxes">
-        <h3>2 replacement heads</h3>
-        <h3>2 replacement heads</h3>
-        <h3>1 replacement head</h3>
+        <h3>{colorCount(family).blue} blue replacement heads</h3>
+        <h3>{colorCount(family).green} green replacement heads</h3>
+        <h3>{colorCount(family).pink} pink replacement head</h3>
       </div>
     </div>
   );
 }
+
+RefillBoxes.propTypes = {
+  family: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    brush_color: PropTypes.string.isRequired,
+  }),
+};
 
 export default RefillBoxes;

@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
-// import Boxes from "../components/Boxes"
+import PropTypes from "prop-types";
 import { Context } from "../Context";
+import useColorCount from "../hooks/useColorCount";
 
 function StarterBoxes() {
-  const { numBrushes, numStarter } = useContext(Context);
+  const { numBrushes, numStarter, family } = useContext(Context);
+  const { colorCount } = useColorCount();
 
   return (
     <div>
       <h1>Starter Boxes</h1>
       <h2>Summary:</h2>
-      <div className="summary"> {/* apply styling here */}
+      <div className="summary">
         <h3>Starter Boxes: {numStarter ? numStarter : null}</h3>
         <h3>Brushes: {numBrushes ? numBrushes : null}</h3>
         <h3>Replacement Heads: {numBrushes ? numBrushes : null}</h3>
@@ -17,15 +19,22 @@ function StarterBoxes() {
 
       <h1>Boxes:</h1>
       <div className="boxes">
-        <h3>2 brushes</h3>
-        <h3>2 replacement heads</h3>
-        <h3>2 brushes</h3>
-        <h3>2 replacement heads</h3>
-        <h3>1 brush</h3>
-        <h3>1 replacement head</h3>
+        <h3>{colorCount(family).blue} blue brushes</h3>
+        <h3>{colorCount(family).blue} blue replacement heads</h3>
+        <h3>{colorCount(family).green} green brushes</h3>
+        <h3>{colorCount(family).green} green replacement heads</h3>
+        <h3>{colorCount(family).pink} pink brush</h3>
+        <h3>{colorCount(family).pink} pink replacement head</h3>
       </div>
     </div>
   );
 }
+
+StarterBoxes.propTypes = {
+  family: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    brush_color: PropTypes.string.isRequired,
+  }),
+};
 
 export default StarterBoxes;
