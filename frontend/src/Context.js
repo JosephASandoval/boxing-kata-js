@@ -4,18 +4,18 @@ import { dataURL } from "./data/dataURL";
 const Context = React.createContext();
 
 function ContextProvider({ children }) {
-  const [allUsers, setAllUsers] = useState([]);
+  const [family, setFamily] = useState([]);
 
   useEffect(() => {
     fetch(dataURL)
       .then((res) => res.json())
-      .then((data) => setAllUsers(data));
+      .then((data) => setFamily(data));
   }, []);
 
   return (
     <Context.Provider
       value={{
-        allUsers,
+        family,
       }}
     >
       {children}
