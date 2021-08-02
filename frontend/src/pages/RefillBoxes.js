@@ -6,6 +6,7 @@ import useColorCount from "../hooks/useColorCount";
 function RefillBoxes() {
   const { numBrushes, numRefill, family } = useContext(Context);
   const { colorCount } = useColorCount();
+  const { blue, green, pink } = colorCount(family);
 
   return (
     <div>
@@ -18,9 +19,9 @@ function RefillBoxes() {
 
       <h1>Boxes:</h1>
       <div className="boxes">
-        <h3>{colorCount(family).blue} blue replacement heads</h3>
-        <h3>{colorCount(family).green} green replacement heads</h3>
-        <h3>{colorCount(family).pink} pink replacement head</h3>
+        <h3>{blue} blue replacement heads</h3>
+        <h3>{green} green replacement heads</h3>
+        <h3>{pink} pink replacement head</h3>
       </div>
     </div>
   );

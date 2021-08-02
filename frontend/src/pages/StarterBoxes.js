@@ -6,6 +6,7 @@ import useColorCount from "../hooks/useColorCount";
 function StarterBoxes() {
   const { numBrushes, numStarter, family } = useContext(Context);
   const { colorCount } = useColorCount();
+  const { blue, green, pink } = colorCount(family);
 
   return (
     <div>
@@ -19,12 +20,12 @@ function StarterBoxes() {
 
       <h1>Boxes:</h1>
       <div className="boxes">
-        <h3>{colorCount(family).blue} blue brushes</h3>
-        <h3>{colorCount(family).blue} blue replacement heads</h3>
-        <h3>{colorCount(family).green} green brushes</h3>
-        <h3>{colorCount(family).green} green replacement heads</h3>
-        <h3>{colorCount(family).pink} pink brush</h3>
-        <h3>{colorCount(family).pink} pink replacement head</h3>
+        <h3>{blue} blue brushes</h3>
+        <h3>{blue} blue replacement heads</h3>
+        <h3>{green} green brushes</h3>
+        <h3>{green} green replacement heads</h3>
+        <h3>{pink} pink brush</h3>
+        <h3>{pink} pink replacement head</h3>
       </div>
     </div>
   );
