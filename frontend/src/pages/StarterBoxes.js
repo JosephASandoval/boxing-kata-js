@@ -7,7 +7,6 @@ function StarterBoxes() {
   const { numBrushes, numStarter, family } = useContext(Context);
   const { colorCount } = useColorCount();
   const colorCountObj = colorCount(family);
-  // const { blue, green, pink } = colorCountObj;
 
   function createBoxes() {
     const boxesArr = [];
@@ -15,12 +14,14 @@ function StarterBoxes() {
     let secondColor;
 
     const colorCountArr = Object.entries(colorCountObj);
+    const filteredColorCountArr = colorCountArr.filter((el) => el[1] > 0);
+    filteredColorCountArr.sort((a, b) => b[1] - a[1]);
 
-    colorCountArr.sort((a, b) => b[1] - a[1]);
+    const formattedColorCountArr = formatArr(filteredColorCountArr);
 
-    for (let idx = 0; idx < colorCountArr.length; idx++) {
-      let [currentColor, currentValue] = colorCountArr[idx];
-      let nextElement = colorCountArr[idx + 1] || null;
+    for (let i = 0; i < formattedColorCountArr.length; i++) {
+      let [currentColor, currentValue] = formattedColorCountArr[i];
+      let nextElement = formattedColorCountArr[i + 1] || ["", 0];
 
       while (currentValue > 0) {
         if (currentValue >= 2) {
@@ -28,7 +29,7 @@ function StarterBoxes() {
           secondColor = firstColor;
           currentValue -= 2;
           createBox(firstColor, secondColor, boxesArr);
-        } else if (currentValue === 1 && nextElement) {
+        } else if (currentValue === 1 && nextElement[1] > 0) {
           firstColor = currentColor;
           secondColor = nextElement[0];
           currentValue -= 1;
@@ -42,14 +43,37 @@ function StarterBoxes() {
         }
       }
     }
-
     return boxesArr;
+  }
+
+  function formatArr(arr) {
+    let newArr = [];
+    for (let i = 0; i < arr.length; i++) {
+      let [color, value] = arr[i];
+
+      let nextValue = arr[i + 1] ? arr[i + 1][1] : 0;
+
+      while (value > 0) {
+        if (value >= 2) {
+          newArr.push([color, 2]);
+          value -= 2;
+        } else if (value === 1 && nextValue > 0) {
+          arr.push([color, 1]);
+          value -= 1;
+        } else {
+          newArr.push([color, 1]);
+          value -= 1;
+        }
+      }
+    }
+
+    return newArr;
   }
 
   function createBox(firstColor, secondColor, arr) {
     if (firstColor === secondColor) {
       arr.push(
-        <div className="box">
+        <div key={arr.length} className="box">
           <i className={`color-${firstColor} ri-drop-line`}></i>
           <div>
             <h3>2 brushes</h3>
@@ -59,13 +83,14 @@ function StarterBoxes() {
       );
     } else if (secondColor && firstColor !== secondColor) {
       arr.push(
-        <div className="box">
+        <div key={arr.length} className="box">
           <i className={`color-${firstColor} ri-drop-line`}></i>
           <div>
             <h3>1 brush</h3>
             <h3>1 replacement head</h3>
           </div>
-          <div className={`color-${firstColor}`}>
+          <i className={`color-${secondColor} ri-drop-line`}></i>
+          <div>
             <h3>1 brush</h3>
             <h3>1 replacement head</h3>
           </div>
@@ -73,7 +98,7 @@ function StarterBoxes() {
       );
     } else {
       arr.push(
-        <div className="box">
+        <div key={arr.length} className="box">
           <i className={`color-${firstColor} ri-drop-line`}></i>
           <div>
             <h3>1 brush</h3>
