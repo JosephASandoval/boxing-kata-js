@@ -1,20 +1,21 @@
 import React, { useContext } from "react";
+import StarterSummary from "../components/StarterSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useCreateStarterBoxesData from "../hooks/useCreateStarterBoxesData";
-import useCreateStarterBoxes from "../hooks/useCreateStarterBoxes";
-import StarterBoxSummary from "../components/StarterBoxSummary"
+import useFormateData from "../hooks/useFormatData"
+import { createStarterBoxes } from "../utils/createStarterBoxes";
+
+const BOX_TYPE = "starter"
 
 function StarterBoxes() {
   const { family } = useContext(Context);
-  const { createStarterBoxesData } = useCreateStarterBoxesData();
-  const starterBoxesData = createStarterBoxesData(family);
-  const { createStarterBoxes } = useCreateStarterBoxes();
+  const { formateData } = useFormateData();
+  const starterBoxesData = formateData(family, BOX_TYPE)
   const starterBoxes = createStarterBoxes(starterBoxesData);
 
   return (
     <div>
-      <StarterBoxSummary />
+      <StarterSummary />
 
       <h1>Boxes:</h1>
       <div className="boxes">{starterBoxes}</div>

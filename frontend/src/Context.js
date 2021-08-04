@@ -6,8 +6,8 @@ const Context = React.createContext();
 function ContextProvider({ children }) {
   const [family, setFamily] = useState([]);
   const [numBrushes, setNumBrushes] = useState(0);
-  const [numStarter, setNumStarter] = useState(0);
-  const [numRefill, setNumRefill] = useState(0);
+  const [numStarterBoxes, setNumStarterBoxes] = useState(0);
+  const [numRefillBoxes, setNumRefillBoxes] = useState(0);
 
   useEffect(() => {
     fetch(dataURL)
@@ -21,8 +21,8 @@ function ContextProvider({ children }) {
   useEffect(() => {
     const numFamily = family.length;
     setNumBrushes(numFamily);
-    setNumStarter(Math.ceil(numFamily / 2));
-    setNumRefill(Math.ceil(numFamily / 4));
+    setNumStarterBoxes(Math.ceil(numFamily / 2));
+    setNumRefillBoxes(Math.ceil(numFamily / 4));
   }, [family]);
 
   return (
@@ -30,8 +30,8 @@ function ContextProvider({ children }) {
       value={{
         family,
         numBrushes,
-        numStarter,
-        numRefill,
+        numStarterBoxes,
+        numRefillBoxes,
       }}
     >
       {children}

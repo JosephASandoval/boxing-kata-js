@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
+import RefillSummary from "../components/RefillSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useCreateRefillBoxesData from "../hooks/useCreateRefillBoxesData";
-import useCreateRefillBoxes from "../hooks/useCreateRefillBoxes";
-import RefillBoxSummary from "../components/RefillBoxSummary";
+import useFormateData from "../hooks/useFormatData";
+import { createRefillBoxes } from "../utils/createRefillBoxes";
 
+const BOX_TYPE = "refill";
 
 function RefillBoxes() {
   const { family } = useContext(Context);
-  const { createRefillBoxesData } = useCreateRefillBoxesData();
-  const refillBoxesData = createRefillBoxesData(family);
-  const { createRefillBoxes } = useCreateRefillBoxes();
+  const { formateData } = useFormateData();
+  const refillBoxesData = formateData(family, BOX_TYPE);
   const refillBoxes = createRefillBoxes(refillBoxesData);
 
   return (
     <div>
-      <RefillBoxSummary />
+      <RefillSummary />
 
       <h1>Boxes:</h1>
       <div className="boxes">{refillBoxes}</div>

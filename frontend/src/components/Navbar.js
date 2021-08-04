@@ -1,19 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import useDisable from "../hooks/useDisable";
 
 function Navbar() {
-  const [isStarterDisabled, setIsStarterDisabled] = useState(false);
-  const [isRefillDisabled, setIsRefillDisabled] = useState(false);
-
-  function disableStarterLink() {
-    setIsStarterDisabled(true);
-    setIsRefillDisabled(false);
-  }
-
-  function disableRefillLink() {
-    setIsRefillDisabled(true);
-    setIsStarterDisabled(false);
-  }
+  const {
+    isStarterDisabled,
+    isRefillDisabled,
+    disableStarterLink,
+    disableRefillLink,
+  } = useDisable();
 
   const styleStarterLink = isStarterDisabled ? "link-disabled" : "";
   const styleRefillLink = isRefillDisabled ? "link-disabled" : "";

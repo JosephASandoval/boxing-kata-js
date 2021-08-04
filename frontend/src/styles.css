@@ -30,16 +30,19 @@ h3 {
 
 .link {
   color: #01c4e9;
+  opacity: 0.65;
   font-weight: 400;
   text-decoration: none;
 }
 
 .link:hover {
-  color: #02afd1;
+  color: #01c4e9;
+  opacity: 1;
 }
 
 .link-disabled {
-  color: #0294b1;
+  color: #01c4e9;
+  font-weight: 400;
   pointer-events: none;
 }
 

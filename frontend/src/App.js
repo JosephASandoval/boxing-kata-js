@@ -1,20 +1,20 @@
 import React from "react";
+import { Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import StarterSummary from "./components/StarterSummary";
 import StarterBoxes from "./pages/StarterBoxes";
-import StarterBoxSummary from "./components/StarterBoxSummary"
 import RefillBoxes from "./pages/RefillBoxes";
-import { Switch, Route } from "react-router-dom";
 
 function App() {
   return (
     <div>
       <Header />
       <Navbar />
-
+      
       <Switch>
         <Route exact path="/">
-          <StarterBoxSummary />
+          <StarterSummary />
         </Route>
 
         <Route path="/starter">
