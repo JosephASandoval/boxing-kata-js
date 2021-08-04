@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const [isStarterDisabled, setIsStarterDisabled] = useState(true);
+  const [isStarterDisabled, setIsStarterDisabled] = useState(false);
   const [isRefillDisabled, setIsRefillDisabled] = useState(false);
 
   function disableStarterLink() {
@@ -20,7 +20,7 @@ function Navbar() {
 
   return (
     <nav>
-      <Link className={styleStarterLink} to="/">
+      <Link className={styleStarterLink} to="/starter">
         <h2
           className={isStarterDisabled ? "link-disabled" : "link"}
           onClick={disableStarterLink}
