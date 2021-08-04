@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { dataURL } from "./data/dataURL";
+// import { dataURL } from "./data/dataURL";
+import { testData } from "./data/testData";
 
 const Context = React.createContext();
 
@@ -9,13 +10,17 @@ function ContextProvider({ children }) {
   const [numStarterBoxes, setNumStarterBoxes] = useState(0);
   const [numRefillBoxes, setNumRefillBoxes] = useState(0);
 
+  // useEffect(() => {
+  //   fetch(dataURL)
+  //     .then((res) => res.json())
+  //     .then((data) => setFamily(data))
+  //     .catch((err) =>
+  //       console.log("Error: Could not receive family preferences")
+  //     );
+  // }, []);
+
   useEffect(() => {
-    fetch(dataURL)
-      .then((res) => res.json())
-      .then((data) => setFamily(data))
-      .catch((err) =>
-        console.log("Error: Could not receive family preferences")
-      );
+    setFamily(testData);
   }, []);
 
   useEffect(() => {

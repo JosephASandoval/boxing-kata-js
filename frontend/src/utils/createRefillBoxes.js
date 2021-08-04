@@ -1,9 +1,19 @@
+import { createOneRefill } from "./refills/createOneRefill";
+import { createTwoRefills } from "./refills/createTwoRefills";
+import { createThreeRefills } from "./refills/createThreeRefills";
+import { createFourRefills } from "./refills/createFourRefills";
+import { createFiveRefills } from "./refills/createFiveRefills";
+import { createSixRefills } from "./refills/createSixRefills";
+import { createSevenRefills } from "./refills/createSevenRefills";
+import { createEightRefills } from "./refills/createEightRefills";
+import { createNineRefills } from "./refills/createNineRefills";
+
 export function createRefillBoxes(refillBoxesData) {
-  function createBox(arr) {
+  function createBox(refillBoxesData) {
     let boxesArr = [];
 
-    for (let i = 0; i < arr.length; i++) {
-      const [type, quantity] = arr[i];
+    for (let i = 0; i < refillBoxesData.length; i++) {
+      const [type, quantity] = refillBoxesData[i];
 
       if (type.includes("Group")) {
         createQuad(type, quantity, boxesArr);
@@ -12,7 +22,9 @@ export function createRefillBoxes(refillBoxesData) {
       }
     }
 
-    const remainderArr = arr.filter((el) => el[0].includes("Remainder"));
+    const remainderArr = refillBoxesData.filter((el) =>
+      el[0].includes("Remainder")
+    );
     const sortedArr = remainderArr.sort((a, b) => a[1] - b[1]);
 
     let sumRemaining = 0;
@@ -23,16 +35,17 @@ export function createRefillBoxes(refillBoxesData) {
     let type3;
     let quantity1;
     let quantity2;
+    let sortedArrLen = sortedArr.length;
 
-    if (sortedArr.length === 1) {
+    if (sortedArrLen === 1) {
       type1 = sortedArr[0][0];
       quantity1 = sortedArr[0][1];
-    } else if (sortedArr.length === 2) {
+    } else if (sortedArrLen === 2) {
       type1 = sortedArr[0][0];
       quantity1 = sortedArr[0][1];
       type2 = sortedArr[1][0];
       quantity2 = sortedArr[1][1];
-    } else if (sortedArr.length === 3) {
+    } else if (sortedArrLen === 3) {
       type1 = sortedArr[0][0];
       quantity1 = sortedArr[0][1];
       type2 = sortedArr[1][0];
@@ -40,32 +53,22 @@ export function createRefillBoxes(refillBoxesData) {
       type3 = sortedArr[2][0];
     }
 
-    if (sortedArr.length > 0) {
-      if (sumRemaining === 9) {
-        createRemainingNine(boxesArr);
-      } else if (sumRemaining === 8) {
-        createRemainingEight(type1, type2, type3, boxesArr);
-      } else if (sumRemaining === 7) {
-        createRemainingSeven(type1, type2, type3, quantity1, boxesArr);
-      } else if (sumRemaining === 6) {
-        createRemainingSix(type1, type2, type3, quantity1, quantity2, boxesArr);
-      } else if (sumRemaining === 5) {
-        createRemainingFive(type1, type2, type3, quantity2, boxesArr);
-      } else if (sumRemaining === 4) {
-        createRemainingFour(type1, type2, type3, quantity2, boxesArr);
-      } else if (sumRemaining === 3) {
-        createRemainingThree(type1, type2, type3, boxesArr);
-      } else if (sumRemaining === 2) {
-        createRemainingTwo(type1, type2, boxesArr);
-      } else if (sumRemaining === 1) {
-        createRemainingOne(type1, boxesArr);
-      }
+    if (sortedArrLen > 0) {
+      createRemainder(
+        type1,
+        type2,
+        type3,
+        quantity1,
+        quantity2,
+        boxesArr,
+        sumRemaining,
+        sortedArrLen
+      );
     }
-
     return boxesArr;
   }
 
-  function createQuad(type, quantity, arr) {
+  function createQuad(type, quantity, boxesArr) {
     let color;
 
     if (type && type.includes("blue")) {
@@ -78,8 +81,8 @@ export function createRefillBoxes(refillBoxesData) {
 
     let i = 0;
     while (i < quantity) {
-      arr.push(
-        <div key={arr.length} className="box">
+      boxesArr.push(
+        <div key={boxesArr.length} className="box">
           <i className={`color-${color} ri-drop-line`}></i>
           <div>
             <h3>4 replacement heads</h3>
@@ -90,36 +93,40 @@ export function createRefillBoxes(refillBoxesData) {
     }
   }
 
-  function createRemainingNine(arr) {
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-blue ri-drop-line`}></i>
-        <div>
-          <h3>3 replacement heads</h3>
-        </div>
-      </div>
-    );
+  function createRemainder(
+    type1,
+    type2,
+    type3,
+    quantity1,
+    quantity2,
+    boxesArr,
+    sumRemaining,
+    sortedArrLen
+  ) {
+    let key;
+    switch (sumRemaining) {
+      case 9 || 8 || 1:
+        key = type1;
+        break;
+      case 7:
+        key = quantity1;
+        break;
+      case 6:
+        key = quantity1 + quantity2;
+        break;
+      case 5 || 4:
+        key = quantity2;
+        break;
+      case 3:
+        key = sortedArrLen;
+        break;
+      case 2:
+        key = type2;
+        break;
+      default:
+        break;
+    }
 
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-green ri-drop-line`}></i>
-        <div>
-          <h3>3 replacement heads</h3>
-        </div>
-      </div>
-    );
-
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-pink ri-drop-line`}></i>
-        <div>
-          <h3>3 replacement heads</h3>
-        </div>
-      </div>
-    );
-  }
-
-  function createRemainingEight(type1, type2, type3, arr) {
     let color1;
     let color2;
     let color3;
@@ -148,519 +155,987 @@ export function createRefillBoxes(refillBoxesData) {
       color3 = "pink";
     }
 
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-${color1} ri-drop-line`}></i>
-        <div>
-          <h3>2 replacement heads</h3>
-        </div>
-        <i className={`color-${color2} ri-drop-line`}></i>
-        <div>
-          <h3>2 replacement heads</h3>
-        </div>
-      </div>
-    );
-
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-${color2} ri-drop-line`}></i>
-        <div>
-          <h3>1 replacement head</h3>
-        </div>
-        <i className={`color-${color3} ri-drop-line`}></i>
-        <div>
-          <h3>3 replacement heads</h3>
-        </div>
-      </div>
-    );
+    switch (sumRemaining) {
+      case 9:
+        createNineRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 8:
+        createEightRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 7:
+        createSevenRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 6:
+        createSixRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 5:
+        createFiveRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 4:
+        createFourRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 3:
+        createThreeRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 2:
+        createTwoRefills(key, color1, color2, color3, boxesArr);
+        break;
+      case 1:
+        createOneRefill(key, color1, color2, color3, boxesArr);
+        break;
+      default:
+        break;
+    }
   }
 
-  function createRemainingSeven(type1, type2, type3, quantity, arr) {
-    let color1;
-    let color2;
-    let color3;
+  // function createRemainingNine(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   let color1;
+  //   let color2;
+  //   let color3;
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
 
-    if (type3 && type3.includes("blue")) {
-      color3 = "blue";
-    } else if (type3 && type3.includes("green")) {
-      color3 = "green";
-    } else if (type3 && type3.includes("pink")) {
-      color3 = "pink";
-    }
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
 
-    const first =
-      quantity === 1 ? (
-        <h3>1 replacement head</h3>
-      ) : (
-        <h3>2 replacement heads</h3>
-      );
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
 
-    const second =
-      quantity === 1 ? (
-        <h3>3 replacement heads</h3>
-      ) : (
-        <h3>2 replacement heads</h3>
-      );
+  //   let first;
+  //   if (key) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-${color1} ri-drop-line`}></i>
-        <div>{first}</div>
-        <i className={`color-${color2} ri-drop-line`}></i>
-        <div>{second}</div>
-      </div>
-    );
+  //   boxesArr.push(first);
 
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-${color3} ri-drop-line`}></i>
-        <div>
-          <h3>3 replacement heads</h3>
-        </div>
-      </div>
-    );
-  }
+  //   let second;
+  //   if (key) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-  function createRemainingSix(type1, type2, type3, quantity1, quantity2, arr) {
-    let color1;
-    let color2;
-    let color3;
+  //   boxesArr.push(second);
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   let third;
+  //   if (key) {
+  //     third = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  //   boxesArr.push(third);
+  // }
 
-    if (type3 && type3.includes("blue")) {
-      color3 = "blue";
-    } else if (type3 && type3.includes("green")) {
-      color3 = "green";
-    } else if (type3 && type3.includes("pink")) {
-      color3 = "pink";
-    }
+  // function createRemainingEight(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
 
-    let firstRemainingSix;
-    if (quantity1 + quantity2 === 3) {
-      firstRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else if (quantity1 + quantity2 === 4) {
-      firstRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      firstRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   let color1;
+  //   let color2;
+  //   let color3;
 
-    arr.push(firstRemainingSix);
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
 
-    let secondRemainingSix;
-    if (quantity1 + quantity2 === 3) {
-      secondRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else if (quantity1 + quantity2 === 4) {
-      secondRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      secondRemainingSix = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
 
-    arr.push(secondRemainingSix);
-  }
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
 
-  function createRemainingFive(type1, type2, type3, quantity, arr) {
-    let color1;
-    let color2;
-    let color3;
+  //   let first;
+  //   if (key) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   boxesArr.push(first);
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  //   let second;
+  //   if (key) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    if (type3 && type3.includes("blue")) {
-      color3 = "blue";
-    } else if (type3 && type3.includes("green")) {
-      color3 = "green";
-    } else if (type3 && type3.includes("pink")) {
-      color3 = "pink";
-    }
+  //   boxesArr.push(second);
+  // }
 
-    let firstRemainingFive;
-    if (quantity === 1) {
-      firstRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-        </div>
-      );
-    } else if (quantity === 2) {
-      firstRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      firstRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  // function createRemainingSeven(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
 
-    arr.push(firstRemainingFive);
+  //   let color1;
+  //   let color2;
+  //   let color3;
 
-    let secondRemainingFive;
-    if (quantity === 1) {
-      secondRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else if (quantity === 2) {
-      secondRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      secondRemainingFive = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
 
-    arr.push(secondRemainingFive);
-  }
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
 
-  function createRemainingFour(type1, type2, type3, quantity, arr) {
-    let color1;
-    let color2;
-    let color3;
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   let first;
+  //   if (key === 1) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 2) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  //   boxesArr.push(first);
 
-    if (type3 && type3.includes("blue")) {
-      color3 = "blue";
-    } else if (type3 && type3.includes("green")) {
-      color3 = "green";
-    } else if (type3 && type3.includes("pink")) {
-      color3 = "pink";
-    }
+  //   let second;
+  //   if (key) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    let remainingFour;
-    if (quantity === 1) {
-      remainingFour = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else if (quantity === 2) {
-      remainingFour = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      remainingFour = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   boxesArr.push(second);
+  // }
 
-    arr.push(remainingFour);
-  }
+  // function createRemainingSix(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
 
-  function createRemainingThree(type1, type2, type3, arr) {
-    let color1;
-    let color2;
-    let color3;
+  //   let color1;
+  //   let color2;
+  //   let color3;
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
 
-    if (type3 && type3.includes("blue")) {
-      color3 = "blue";
-    } else if (type3 && type3.includes("green")) {
-      color3 = "green";
-    } else if (type3 && type3.includes("pink")) {
-      color3 = "pink";
-    }
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
 
-    let remainingThree;
-    if (type3) {
-      remainingThree = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color3} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-        </div>
-      );
-    } else if (type2) {
-      remainingThree = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    } else {
-      remainingThree = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>3 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   let first;
+  //   if (key === 3) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 4) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 6) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    arr.push(remainingThree);
-  }
+  //   boxesArr.push(first);
 
-  function createRemainingTwo(type1, type2, arr) {
-    let color1;
-    let color2;
+  //   let second;
+  //   if (key === 3) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 4) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 6) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    if (type1 && type1.includes("blue")) {
-      color1 = "blue";
-    } else if (type1 && type1.includes("green")) {
-      color1 = "green";
-    } else if (type1 && type1.includes("pink")) {
-      color1 = "pink";
-    }
+  //   boxesArr.push(second);
+  // }
 
-    if (type2 && type2.includes("blue")) {
-      color2 = "blue";
-    } else if (type2 && type2.includes("green")) {
-      color2 = "green";
-    } else if (type2 && type2.includes("pink")) {
-      color2 = "pink";
-    }
+  // function createRemainingFive(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
 
-    let remainingTwo;
-    if (type2) {
-      remainingTwo = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-          <i className={`color-${color2} ri-drop-line`}></i>
-          <div>
-            <h3>1 replacement head</h3>
-          </div>
-        </div>
-      );
-    } else {
-      remainingTwo = (
-        <div key={arr.length} className="box">
-          <i className={`color-${color1} ri-drop-line`}></i>
-          <div>
-            <h3>2 replacement heads</h3>
-          </div>
-        </div>
-      );
-    }
+  //   let color1;
+  //   let color2;
+  //   let color3;
 
-    arr.push(remainingTwo);
-  }
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
 
-  function createRemainingOne(type, arr) {
-    let color;
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
 
-    if (type && type.includes("blue")) {
-      color = "blue";
-    } else if (type && type.includes("green")) {
-      color = "green";
-    } else if (type && type.includes("pink")) {
-      color = "pink";
-    }
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
 
-    arr.push(
-      <div key={arr.length} className="box">
-        <i className={`color-${color} ri-drop-line`}></i>
-        <div>
-          <h3>1 replacement head</h3>
-        </div>
-      </div>
-    );
-  }
+  //   let first;
+  //   if (key === 1) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 2) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 3) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(first);
+
+  //   let second;
+  //   if (key === 1) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 2) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 3) {
+  //     second = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(second);
+  // }
+
+  // function createRemainingFour(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
+
+  //   let color1;
+  //   let color2;
+  //   let color3;
+
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
+
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
+
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
+
+  //   let first;
+  //   if (key === 1) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 2) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 3) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(first);
+  // }
+
+  // function createRemainingThree(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
+
+  //   let color1;
+  //   let color2;
+  //   let color3;
+
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
+
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
+
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
+
+  //   let first;
+  //   if (key === 3) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color3} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 2) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (key === 1) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>3 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(first);
+  // }
+
+  // function createRemainingTwo(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
+
+  //   let color1;
+  //   let color2;
+  //   let color3;
+
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
+
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
+
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
+
+  //   let first;
+  //   if (key) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //         <i className={`color-${color2} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else if (!key) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>2 replacement heads</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(first);
+  // }
+
+  // function createRemainingOne(
+  //   type1,
+  //   type2,
+  //   type3,
+  //   quantity1,
+  //   quantity2,
+  //   boxesArr,
+  //   sumRemaining,
+  //   sortedArrLen
+  // ) {
+  //   let key;
+  //   switch (sumRemaining) {
+  //     case 9 || 8 || 1:
+  //       key = type1;
+  //       break;
+  //     case 7:
+  //       key = quantity1;
+  //       break;
+  //     case 6:
+  //       key = quantity1 + quantity2;
+  //       break;
+  //     case 5 || 4:
+  //       key = quantity2;
+  //       break;
+  //     case 3:
+  //       key = sortedArrLen;
+  //       break;
+  //     case 2:
+  //       key = type2;
+  //       break;
+  //   }
+
+  //   let color1;
+  //   let color2;
+  //   let color3;
+
+  //   if (type1 && type1.includes("blue")) {
+  //     color1 = "blue";
+  //   } else if (type1 && type1.includes("green")) {
+  //     color1 = "green";
+  //   } else if (type1 && type1.includes("pink")) {
+  //     color1 = "pink";
+  //   }
+
+  //   if (type2 && type2.includes("blue")) {
+  //     color2 = "blue";
+  //   } else if (type2 && type2.includes("green")) {
+  //     color2 = "green";
+  //   } else if (type2 && type2.includes("pink")) {
+  //     color2 = "pink";
+  //   }
+
+  //   if (type3 && type3.includes("blue")) {
+  //     color3 = "blue";
+  //   } else if (type3 && type3.includes("green")) {
+  //     color3 = "green";
+  //   } else if (type3 && type3.includes("pink")) {
+  //     color3 = "pink";
+  //   }
+
+  //   let first;
+  //   if (key) {
+  //     first = (
+  //       <div key={boxesArr.length} className="box">
+  //         <i className={`color-${color1} ri-drop-line`}></i>
+  //         <div>
+  //           <h3>1 replacement head</h3>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   boxesArr.push(first);
+  // }
 
   const boxes = createBox(refillBoxesData);
   return boxes;

@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 import RefillSummary from "../components/RefillSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useFormateData from "../hooks/useFormatData";
+import useFormatData from "../hooks/useFormatData";
 import { createRefillBoxes } from "../utils/createRefillBoxes";
 
 const BOX_TYPE = "refill";
 
 function RefillBoxes() {
   const { family } = useContext(Context);
-  const { formateData } = useFormateData();
-  const refillBoxesData = formateData(family, BOX_TYPE);
+  const { formatData } = useFormatData();
+  const refillBoxesData = formatData(family, BOX_TYPE);
   const refillBoxes = createRefillBoxes(refillBoxesData);
 
   return (

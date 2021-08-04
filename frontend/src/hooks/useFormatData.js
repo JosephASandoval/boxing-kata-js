@@ -1,5 +1,5 @@
-function useFormateData() {
-  function formateData(family, boxType) {
+function useFormatData() {
+  function formatData(family, boxType) {
     let divisor;
     if (boxType === "starter") {
       divisor = 2;
@@ -39,7 +39,7 @@ function useFormateData() {
     return filteredDataArr;
   }
 
-  return { formateData };
+  return { formatData };
 }
 
-export default useFormateData;
+export default useFormatData;

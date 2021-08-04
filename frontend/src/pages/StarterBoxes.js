@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 import StarterSummary from "../components/StarterSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useFormateData from "../hooks/useFormatData"
+import useFormatData from "../hooks/useFormatData"
 import { createStarterBoxes } from "../utils/createStarterBoxes";
 
 const BOX_TYPE = "starter"
 
 function StarterBoxes() {
   const { family } = useContext(Context);
-  const { formateData } = useFormateData();
-  const starterBoxesData = formateData(family, BOX_TYPE)
+  const { formatData } = useFormatData();
+  const starterBoxesData = formatData(family, BOX_TYPE)
   const starterBoxes = createStarterBoxes(starterBoxesData);
 
   return (
