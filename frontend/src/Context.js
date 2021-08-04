@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { dataURL } from "./data/dataURL";
-import { testData } from "./data/testData";
+import { dataURL } from "./data/dataURL";
 
 const Context = React.createContext();
 
@@ -10,14 +9,10 @@ function ContextProvider({ children }) {
   const [numStarter, setNumStarter] = useState(0);
   const [numRefill, setNumRefill] = useState(0);
 
-  // useEffect(() => {
-  //   fetch(dataURL)
-  //     .then((res) => res.json())
-  //     .then((data) => setFamily(data));
-  // }, []);
-
   useEffect(() => {
-    setFamily(testData);
+    fetch(dataURL)
+      .then((res) => res.json())
+      .then((data) => setFamily(data));
   }, []);
 
   useEffect(() => {
