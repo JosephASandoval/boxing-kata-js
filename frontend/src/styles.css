@@ -31,6 +31,16 @@ h3 {
 .link {
   color: #01c4e9;
   font-weight: 400;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #02afd1;
+}
+
+.link-disabled {
+  color: #0294b1;
+  pointer-events: none;
 }
 
 a {
@@ -52,5 +62,14 @@ a {
 }
 
 .error {
-  color: red;
+  animation: change 2s step-end both;
+}
+
+@keyframes change {
+  from {
+    color: rgba(0, 0, 0, 0);
+  }
+  to {
+    color: red;
+  }
 }
