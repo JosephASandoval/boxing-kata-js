@@ -12,7 +12,10 @@ function ContextProvider({ children }) {
   useEffect(() => {
     fetch(dataURL)
       .then((res) => res.json())
-      .then((data) => setFamily(data));
+      .then((data) => setFamily(data))
+      .catch((err) =>
+        console.log("Error: Could not receive family preferences")
+      );
   }, []);
 
   useEffect(() => {

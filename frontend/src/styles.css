@@ -50,3 +50,7 @@ a {
 .color-pink {
   background-color: #e92fac;
 }
+
+.error {
+  color: red;
+}

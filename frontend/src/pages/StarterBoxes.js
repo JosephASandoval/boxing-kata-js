@@ -11,6 +11,13 @@ function StarterBoxes() {
   const { createStarterBoxes } = useCreateStarterBoxes();
   const starterBoxes = createStarterBoxes(starterBoxesData);
 
+  let startScreen =
+    family.length > 0 ? (
+      <div className="boxes">{starterBoxes}</div>
+    ) : (
+      <h1 className="error">Error: Could not receive family preferences</h1>
+    );
+
   return (
     <div>
       <h1>Starter Boxes</h1>
@@ -22,7 +29,7 @@ function StarterBoxes() {
       </div>
 
       <h1>Boxes:</h1>
-      <div className="boxes">{starterBoxes}</div>
+      {startScreen}
     </div>
   );
 }
