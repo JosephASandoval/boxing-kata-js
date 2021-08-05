@@ -1,6 +1,5 @@
 The Javascript Boxing kata
 =================
-[Github Repo for this React App](https://github.com/JosephASandoval/boxing-kata-js)
 
 Technical decision making
 ------------
