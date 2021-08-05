@@ -23,3 +23,5 @@ To run the test cases using Jest
 cd boxing-kata-js/frontend
 npm test
 ```
+
+Version of node used: v10.14.2
