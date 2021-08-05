@@ -51,7 +51,22 @@ a {
 }
 
 .box {
-  border: black solid 1px;
+  border: black solid 5px;
+  padding: 20%;
+  min-width: 270px;
+  min-height: 270px;
+  margin-left: 20%;
+}
+
+.boxes {
+  display: grid;
+  grid-template-columns: 150px 150px 150px;
+  grid-template-rows: auto;
+  column-gap: 220px;
+  row-gap: 30px;
+  justify-items: stretch;
+  align-items: center;
+  margin-bottom: 10%;
 }
 
 .color-blue {
@@ -62,6 +77,10 @@ a {
 }
 .color-pink {
   background-color: #e92fac;
+}
+
+i {
+  font-size: 20px;
 }
 
 .error {
@@ -78,4 +97,12 @@ a {
   to {
     color: red;
   }
+}
+
+.box-title {
+  margin-bottom: 3%;
+}
+
+.app {
+  margin-left: 10%;
 }

@@ -10,13 +10,13 @@ import { createNineRefills } from "./refills/createNineRefills";
 
 export function createRefillBoxes(refillBoxesData) {
   function createBox(refillBoxesData) {
-    let boxesArr = []; 
+    let boxesArr = [];
     // goal is to fill this box with display items and return it at the end
 
     for (let i = 0; i < refillBoxesData.length; i++) {
-      const [type, quantity] = refillBoxesData[i]; 
+      const [type, quantity] = refillBoxesData[i];
 
-      if (type.includes("Group")) { 
+      if (type.includes("Group")) {
         // using iteration becuase I know that the "Group" types are at the beginning if they exist
         createQuad(type, quantity, boxesArr);
       } else {
@@ -88,7 +88,7 @@ export function createRefillBoxes(refillBoxesData) {
     while (i < quantity) {
       boxesArr.push(
         <div key={boxesArr.length} className="box">
-          <i className={`color-${color} ri-drop-line`}></i>
+          <i className={`color-${color} ri-focus-3-line`}></i>
           <div>
             <h3>4 replacement heads</h3>
           </div>

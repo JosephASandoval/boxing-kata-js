@@ -3,7 +3,7 @@ export function createNineRefills(key, color1, color2, color3, boxesArr) {
   if (key) {
     first = (
       <div key={boxesArr.length} className="box">
-        <i className={`color-${color1} ri-drop-line`}></i>
+        <i className={`color-${color1} ri-focus-3-line`}></i>
         <div>
           <h3>3 replacement heads</h3>
         </div>
@@ -17,7 +17,7 @@ export function createNineRefills(key, color1, color2, color3, boxesArr) {
   if (key) {
     second = (
       <div key={boxesArr.length} className="box">
-        <i className={`color-${color2} ri-drop-line`}></i>
+        <i className={`color-${color2} ri-focus-3-line`}></i>
         <div>
           <h3>3 replacement heads</h3>
         </div>
@@ -31,7 +31,7 @@ export function createNineRefills(key, color1, color2, color3, boxesArr) {
   if (key) {
     third = (
       <div key={boxesArr.length} className="box">
-        <i className={`color-${color3} ri-drop-line`}></i>
+        <i className={`color-${color3} ri-focus-3-line`}></i>
         <div>
           <h3>3 replacement heads</h3>
         </div>

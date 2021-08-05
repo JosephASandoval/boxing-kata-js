@@ -8,7 +8,7 @@ import RefillBoxes from "./pages/RefillBoxes";
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <Header />
       <Navbar />
       

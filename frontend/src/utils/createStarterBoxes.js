@@ -41,7 +41,7 @@ export function createStarterBoxes(starterBoxesData) {
     while (i < quantity) {
       arr.push(
         <div key={arr.length} className="box">
-          <i className={`color-${color} ri-drop-line`}></i>
+          <i className={`color-${color} ri-focus-3-line`}></i>
           <div>
             <h3>2 brushes</h3>
             <h3>2 replacement heads</h3>
@@ -74,12 +74,12 @@ export function createStarterBoxes(starterBoxesData) {
 
     arr.push(
       <div key={arr.length} className="box">
-        <i className={`color-${color1} ri-drop-line`}></i>
+        <i className={`color-${color1} ri-focus-3-line`}></i>
         <div>
           <h3>1 brush</h3>
           <h3>1 replacement head</h3>
         </div>
-        <i className={`color-${color2} ri-drop-line`}></i>
+        <i className={`color-${color2} ri-focus-3-line`}></i>
         <div>
           <h3>1 brush</h3>
           <h3>1 replacement head</h3>
@@ -101,7 +101,7 @@ export function createStarterBoxes(starterBoxesData) {
 
     arr.push(
       <div key={arr.length} className="box">
-        <i className={`color-${color} ri-drop-line`}></i>
+        <i className={`color-${color} ri-focus-3-line`}></i>
         <div>
           <h3>1 brush</h3>
           <h3>1 replacement head</h3>

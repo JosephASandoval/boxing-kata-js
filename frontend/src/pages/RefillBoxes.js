@@ -17,7 +17,7 @@ function RefillBoxes() {
     <div>
       <RefillSummary />
 
-      <h1>Boxes:</h1>
+      <h1 className="box-title">Boxes:</h1>
       <div className="boxes">{refillBoxes}</div>
     </div>
   );
