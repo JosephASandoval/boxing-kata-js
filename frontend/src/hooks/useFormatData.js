@@ -1,12 +1,5 @@
 function useFormatData() {
-  function formatData(family, boxType) {
-    let divisor;
-    if (boxType === "starter") {
-      divisor = 2;
-    } else if (boxType === "refill") {
-      divisor = 4;
-    }
-
+  function formatData(family) {
     let blue = family.filter((member) => {
       return member.brush_color === "blue";
     }).length;
@@ -17,26 +10,16 @@ function useFormatData() {
       return member.brush_color === "pink";
     }).length;
 
-    const blueGroup = Math.floor(blue / divisor);
-    const greenGroup = Math.floor(green / divisor);
-    const pinkGroup = Math.floor(pink / divisor);
-    const blueRemainder = blue % divisor;
-    const greenRemainder = green % divisor;
-    const pinkRemainder = pink % divisor;
-
     const dataObj = {
-      blueGroup,
-      greenGroup,
-      pinkGroup,
-      blueRemainder,
-      greenRemainder,
-      pinkRemainder,
+      blue,
+      green,
+      pink,
     };
 
     const dataArr = Object.entries(dataObj);
-    const filteredDataArr = dataArr.filter((el) => el[1] > 0);
+    const sortedDataArr = dataArr.sort((a, b) => b[1] - a[1]);
 
-    return filteredDataArr;
+    return sortedDataArr;
   }
 
   return { formatData };

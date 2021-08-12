@@ -5,13 +5,11 @@ import PropTypes from "prop-types";
 import useFormatData from "../hooks/useFormatData";
 import { createRefillBoxes } from "../utils/createRefillBoxes";
 
-const BOX_TYPE = "refill";
-
 function RefillBoxes() {
-  const { family } = useContext(Context);
+  const { family, numRefillBoxes } = useContext(Context);
   const { formatData } = useFormatData();
-  const refillBoxesData = formatData(family, BOX_TYPE);
-  const refillBoxes = createRefillBoxes(refillBoxesData);
+  const refillBoxesData = formatData(family);
+  const refillBoxes = createRefillBoxes(refillBoxesData, numRefillBoxes);
 
   return (
     <div>
