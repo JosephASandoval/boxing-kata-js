@@ -13,13 +13,13 @@ export const test = [
     primary_insured_id: 2,
     contract_effective_date: "",
   },
-  {
-    id: 4,
-    name: "Luke",
-    brush_color: "green",
-    primary_insured_id: 2,
-    contract_effective_date: "",
-  },
+  // {
+  //   id: 4,
+  //   name: "Luke",
+  //   brush_color: "green",
+  //   primary_insured_id: 2,
+  //   contract_effective_date: "",
+  // },
   {
     id: 4,
     name: "Luke",
