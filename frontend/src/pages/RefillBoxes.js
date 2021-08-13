@@ -3,15 +3,19 @@ import RefillSummary from "../components/RefillSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
 import useFormatData from "../hooks/useFormatData";
-import { createRefillBoxes } from "../utils/createRefillBoxes";
+import { createBoxes } from "../utils/createBoxes";
 
-const BOX_TYPE = "refill";
+const MAX_ITEMS = 4;
 
 function RefillBoxes() {
-  const { family } = useContext(Context);
+  const { family, numRefillBoxes } = useContext(Context);
   const { formatData } = useFormatData();
-  const refillBoxesData = formatData(family, BOX_TYPE);
-  const refillBoxes = createRefillBoxes(refillBoxesData);
+  const refillBoxesData = formatData(family, MAX_ITEMS);
+  const refillBoxes = createBoxes(
+    refillBoxesData,
+    numRefillBoxes,
+    MAX_ITEMS
+  );
 
   return (
     <div>

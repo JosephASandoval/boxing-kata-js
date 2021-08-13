@@ -1,36 +1,29 @@
 function useFormatData() {
-  function formatData(family, boxType) {
-    let divisor;
-    if (boxType === "starter") {
-      divisor = 2;
-    } else if (boxType === "refill") {
-      divisor = 4;
-    }
-
-    let blue = family.filter((member) => {
+  function formatData(family, MAX_ITEMS) {
+    let numBlue = family.filter((member) => {
       return member.brush_color === "blue";
     }).length;
-    let green = family.filter((member) => {
+    let numGreen = family.filter((member) => {
       return member.brush_color === "green";
     }).length;
-    let pink = family.filter((member) => {
+    let numPink = family.filter((member) => {
       return member.brush_color === "pink";
     }).length;
 
-    const blueGroup = Math.floor(blue / divisor);
-    const greenGroup = Math.floor(green / divisor);
-    const pinkGroup = Math.floor(pink / divisor);
-    const blueRemainder = blue % divisor;
-    const greenRemainder = green % divisor;
-    const pinkRemainder = pink % divisor;
+    const blueGroup = Math.floor(numBlue / MAX_ITEMS);
+    const greenGroup = Math.floor(numGreen / MAX_ITEMS);
+    const pinkGroup = Math.floor(numPink / MAX_ITEMS);
+    const blue = numBlue % MAX_ITEMS;
+    const green = numGreen % MAX_ITEMS;
+    const pink = numPink % MAX_ITEMS;
 
     const dataObj = {
       blueGroup,
       greenGroup,
       pinkGroup,
-      blueRemainder,
-      greenRemainder,
-      pinkRemainder,
+      blue,
+      green,
+      pink,
     };
 
     const dataArr = Object.entries(dataObj);
