@@ -1,7 +1,5 @@
 export function createRefillBoxes(refillBoxesData, numRefillBoxes, MAX_ITEMS) {
-  // console.log(refillBoxesData, numRefillBoxes, MAX_ITEMS);
-  // refillBoxesData = [[blue, 2], [green, 2], [pink, 1]] (works for this simple one)
-  let boxesArr = new Array(numRefillBoxes).fill(null).map(() => []); // [[], []]
+  let boxesArr = new Array(numRefillBoxes).fill(null).map(() => []);
 
   const groupsData = refillBoxesData.filter((elem) =>
     elem[0].includes("Group")
@@ -15,35 +13,8 @@ export function createRefillBoxes(refillBoxesData, numRefillBoxes, MAX_ITEMS) {
     (elem) => !elem[0].includes("Group")
   );
 
-  // goal: is to fill this box with display items and return it at the end
-  for (const colorSet of remainingData) {
-    const [color, numItems] = colorSet;
-    let count = numItems;
-
-    // initialize minIdx
-    let minIdx = 0;
-
-    // updates minIdx
-    for (let i = 0; i < boxesArr.length; i++) {
-      if (boxesArr[i].length < boxesArr[minIdx].length) {
-        minIdx = i;
-      }
-    }
-
-    // push colors into minBox
-    if (boxesArr[minIdx].length + numItems <= MAX_ITEMS) {
-      for (let j = 0; j < numItems; j++) {
-        boxesArr[minIdx].push(color);
-      }
-    } else {
-      // splitting step
-      for (let i = 0; i < boxesArr.length; i++) {
-        if (count && boxesArr[i].length + 1 <= MAX_ITEMS) {
-          boxesArr[i].push(color);
-          count--;
-        }
-      }
-    }
+  if (remainingData.length > 0) {
+    handleRemaining(remainingData, boxesArr, MAX_ITEMS);
   }
 
   console.log(boxesArr);
@@ -52,10 +23,8 @@ export function createRefillBoxes(refillBoxesData, numRefillBoxes, MAX_ITEMS) {
 }
 
 function handleGroups(groupsData, boxesArr, MAX_ITEMS) {
-  // [[blueGroup, 1], [greenGroup, 1], [pinkGroup, 1]]
-
   for (const group of groupsData) {
-    let [type, count] = group; // [blueGroup, 2]
+    let [type, count] = group;
 
     // set color from type
     let color;
@@ -83,6 +52,38 @@ function handleGroups(groupsData, boxesArr, MAX_ITEMS) {
         boxesArr[minIdx].push(color);
       }
       count--;
+    }
+  }
+}
+
+function handleRemaining(remainingData, boxesArr, MAX_ITEMS) {
+  for (const colorSet of remainingData) {
+    const [color, numItems] = colorSet;
+    let count = numItems;
+
+    // initialize minIdx
+    let minIdx = 0;
+
+    // updates minIdx
+    for (let i = 0; i < boxesArr.length; i++) {
+      if (boxesArr[i].length < boxesArr[minIdx].length) {
+        minIdx = i;
+      }
+    }
+
+    // push colors into minBox
+    if (boxesArr[minIdx].length + numItems <= MAX_ITEMS) {
+      for (let j = 0; j < numItems; j++) {
+        boxesArr[minIdx].push(color);
+      }
+    } else {
+      // splitting step
+      for (let i = 0; i < boxesArr.length; i++) {
+        if (count && boxesArr[i].length + 1 <= MAX_ITEMS) {
+          boxesArr[i].push(color);
+          count--;
+        }
+      }
     }
   }
 }
