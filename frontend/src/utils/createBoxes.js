@@ -1,24 +1,21 @@
-export function createRefillBoxes(refillBoxesData, numRefillBoxes, MAX_ITEMS) {
-  let boxesArr = new Array(numRefillBoxes).fill(null).map(() => []);
+export function createBoxes(boxesData, numBoxes, MAX_ITEMS) {
+  let boxesArr = new Array(numBoxes).fill(null).map(() => []);
 
-  const groupsData = refillBoxesData.filter((elem) =>
+  const groupsData = boxesData.filter((elem) =>
     elem[0].includes("Group")
   );
-
   if (groupsData.length > 0) {
     handleGroups(groupsData, boxesArr, MAX_ITEMS);
   }
 
-  const remainingData = refillBoxesData.filter(
+  const remainingData = boxesData.filter(
     (elem) => !elem[0].includes("Group")
   );
-
   if (remainingData.length > 0) {
     handleRemaining(remainingData, boxesArr, MAX_ITEMS);
   }
 
   console.log(boxesArr);
-
   // return boxesArr;
 }
 
@@ -58,6 +55,8 @@ function handleGroups(groupsData, boxesArr, MAX_ITEMS) {
 
 function handleRemaining(remainingData, boxesArr, MAX_ITEMS) {
   for (const colorSet of remainingData) {
+
+    // set color and count
     const [color, numItems] = colorSet;
     let count = numItems;
 

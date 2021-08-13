@@ -10,6 +10,10 @@ function useFormatData() {
       return member.brush_color === "pink";
     }).length;
 
+    // console.log(`numBlue = ${numBlue}`);
+    // console.log(`numGreen = ${numGreen}`);
+    // console.log(`numPink = ${numPink}`);
+
     const blueGroup = Math.floor(numBlue / MAX_ITEMS);
     const greenGroup = Math.floor(numGreen / MAX_ITEMS);
     const pinkGroup = Math.floor(numPink / MAX_ITEMS);
