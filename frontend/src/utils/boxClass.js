@@ -1,4 +1,4 @@
-export class Box {
+class Box {
   constructor(size, content = []) {
     this._size = size;
     this.content = content;
@@ -137,3 +137,5 @@ export class Box {
     return processedBox;
   }
 }
+
+export default Box;

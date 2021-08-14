@@ -1,4 +1,4 @@
-import { Box } from "./boxClass";
+import Box from "./boxClass";
 
 export function createBoxContainer(boxItems, numBoxes, MAX_ITEMS) {
   // step 0: initalize boxContainer with number of boxes needed
@@ -18,7 +18,7 @@ export function createBoxContainer(boxItems, numBoxes, MAX_ITEMS) {
   return finishedBoxContainer;
 }
 
-function fillBoxContainer(boxItems, boxContainer) {
+export function fillBoxContainer(boxItems, boxContainer) {
   // step 0: perform greedy algorithm until there is no more items left to sort
   while (boxItems.length > 0) {
     // step 1: set color and count variable based on color with most items
@@ -53,7 +53,7 @@ function fillBoxContainer(boxItems, boxContainer) {
   }
 }
 
-function processBoxContainer(boxContainer) {
+export function processBoxContainer(boxContainer) {
   let processedBoxContainer = [];
   for (let i = 0; i < boxContainer.length; i++) {
     let box = boxContainer[i];
