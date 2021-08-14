@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 import StarterSummary from "../components/StarterSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useFormatData from "../hooks/useFormatData";
+import useGetItems from "../hooks/useGetItems";
 import { createBoxContainer } from "../utils/createBoxContainer";
 
 const MAX_ITEMS = 2;
 
 function StarterBoxes() {
   const { family, numStarterBoxes } = useContext(Context);
-  const { formatData } = useFormatData();
-  const starterBoxItems = formatData(family);
+  const { getItems } = useGetItems();
+  const starterBoxItems = getItems(family);
   const starterBoxContainer = createBoxContainer(
     starterBoxItems,
     numStarterBoxes,

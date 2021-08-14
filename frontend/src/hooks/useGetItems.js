@@ -1,5 +1,5 @@
-function useFormatData() {
-  function formatData(family) {
+function useGetItems() {
+  function getItems(family) {
     let numBlue = family.filter((member) => {
       return member.brush_color === "blue";
     }).length;
@@ -21,13 +21,13 @@ function useFormatData() {
     };
 
     const itemsArr = Object.entries(itemsObj);
-    const boxItems = itemsArr.filter((el) => el[1] > 0);
-    boxItems.sort((a, b) => b[1] - a[1]);
+    const items = itemsArr.filter((el) => el[1] > 0);
+    items.sort((a, b) => b[1] - a[1]);
 
-    return boxItems;
+    return items;
   }
 
-  return { formatData };
+  return { getItems };
 }
 
-export default useFormatData;
+export default useGetItems;
