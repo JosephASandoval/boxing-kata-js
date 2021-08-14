@@ -132,4 +132,18 @@ export const test = [
     primary_insured_id: 2,
     contract_effective_date: "",
   },
-  ];
+  {
+    id: 5,
+    name: "Leia",
+    brush_color: "blue",
+    primary_insured_id: 2,
+    contract_effective_date: "",
+  },
+  {
+    id: 5,
+    name: "Leia",
+    brush_color: "green",
+    primary_insured_id: 2,
+    contract_effective_date: "",
+  },
+];
