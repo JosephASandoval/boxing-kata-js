@@ -2,17 +2,17 @@ import React, { useContext } from "react";
 import RefillSummary from "../components/RefillSummary";
 import { Context } from "../Context";
 import PropTypes from "prop-types";
-import useFormatData from "../hooks/useFormatData";
-import { createBoxes } from "../utils/createBoxes";
+import useGetItems from "../hooks/useGetItems";
+import { createBoxContainer } from "../utils/createBoxContainer";
 
 const MAX_ITEMS = 4;
 
 function RefillBoxes() {
   const { family, numRefillBoxes } = useContext(Context);
-  const { formatData } = useFormatData();
-  const refillBoxesData = formatData(family, MAX_ITEMS);
-  const refillBoxes = createBoxes(
-    refillBoxesData,
+  const { getItems } = useGetItems();
+  const refillBoxItems = getItems(family);
+  const refillBoxContainer = createBoxContainer(
+    refillBoxItems,
     numRefillBoxes,
     MAX_ITEMS
   );
@@ -22,7 +22,7 @@ function RefillBoxes() {
       <RefillSummary />
 
       <h1 className="box-title">Boxes:</h1>
-      <div className="boxes">{refillBoxes}</div>
+      <div className="boxes">{refillBoxContainer}</div>
     </div>
   );
 }

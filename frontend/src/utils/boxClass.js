@@ -1,25 +1,46 @@
-export function processBoxes(boxes, MAX_ITEMS) {
-  // formats boxes for easier data handling; for example:
-  // [[blue, blue, pink], [green, green]] ==> [{blue: 2, pink: 1}, {green: 2}]
-  let formattedBoxes = [];
-  for (const box of boxes) {
-    let boxObj = {};
-    for (const color of box) {
-      boxObj[color] = boxObj[color] || 0;
-      boxObj[color] += 1;
-    }
-    formattedBoxes.push(boxObj);
+class Box {
+  constructor(size, content = []) {
+    this._size = size;
+    this.content = content;
   }
 
-  // iterate thru formattedBoxes to process each box with jsx and styling
-  let processedBoxes = [];
-  for (let i = 0; i < formattedBoxes.length; i++) {
-    const { blue, green, pink } = formattedBoxes[i];
+  get size() {
+    return this._size;
+  }
+
+  get length() {
+    return this.content.length;
+  }
+
+  get colorCount() {
+    let counts = {};
+    for (const color of this.content) {
+      counts[color] = counts[color] || 0;
+      counts[color] += 1;
+    }
+    return counts;
+  }
+
+  get complexity() {
+    let counts = this.colorCount;
+    let numColors = Object.keys(counts).length;
+    return numColors;
+  }
+
+  get colorOrder() {
+    let alphabet = "abcdefghijklmnopqrstuvwxyz";
+    let letter = this.content[0].slice(0, 1);
+    let letterPosition = alphabet.indexOf(letter);
+    return letterPosition;
+  }
+
+  processBox(key) {
+    const { blue, green, pink } = this.colorCount;
 
     let renderBlue;
     if (blue > 1) {
       renderBlue =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{blue} replacement heads</h3>
         ) : (
           <>
@@ -29,7 +50,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
         );
     } else if (blue === 1) {
       renderBlue =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{blue} replacement head</h3>
         ) : (
           <>
@@ -42,7 +63,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
     let renderGreen;
     if (green > 1) {
       renderGreen =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{green} replacement heads</h3>
         ) : (
           <>
@@ -52,7 +73,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
         );
     } else if (green === 1) {
       renderGreen =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{green} replacement head</h3>
         ) : (
           <>
@@ -65,7 +86,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
     let renderPink;
     if (pink > 1) {
       renderPink =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{pink} replacement heads</h3>
         ) : (
           <>
@@ -75,7 +96,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
         );
     } else if (pink === 1) {
       renderPink =
-        MAX_ITEMS === 4 ? (
+        this.size === 4 ? (
           <h3>{pink} replacement head</h3>
         ) : (
           <>
@@ -86,7 +107,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
     }
 
     const processedBox = (
-      <div key={i} className="box">
+      <div key={key} className="box">
         {renderBlue ? (
           <>
             <i className={`color-blue ri-focus-3-line`}></i>
@@ -113,9 +134,8 @@ export function processBoxes(boxes, MAX_ITEMS) {
         )}
       </div>
     );
-
-    processedBoxes.push(processedBox);
+    return processedBox;
   }
-
-  return processedBoxes;
 }
+
+export default Box;
