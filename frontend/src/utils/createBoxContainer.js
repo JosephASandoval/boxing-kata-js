@@ -1,20 +1,68 @@
-export function processBoxes(boxes, MAX_ITEMS) {
-  // formats boxes for easier data handling; for example:
-  // [[blue, blue, pink], [green, green]] ==> [{blue: 2, pink: 1}, {green: 2}]
-  let formattedBoxes = [];
-  for (const box of boxes) {
+export function createBoxContainer(boxItems, numBoxes, MAX_ITEMS) {
+  // step 0: initalize boxContainer with number of boxes needed
+  let boxContainer = new Array(numBoxes).fill(null).map(() => []);
+  ////////////// refactor: put box instances instead of []
+
+  // step 1: fill boxContainer with boxItems according to sorting scheme
+  fillBoxContainer(boxItems, boxContainer, MAX_ITEMS);
+
+  // step 2: sort boxes
+  boxContainer.sort(); // color
+  boxContainer.sort((a, b) => b.length - a.length); // length
+  ////////////// refactor: then sort by complexity
+
+  // step 3: process boxContainer to have proper jsx and css styling
+  const finishedBoxContainer = processBoxContainer(boxContainer, MAX_ITEMS);
+  return finishedBoxContainer;
+}
+
+function fillBoxContainer(boxItems, boxContainer, MAX_ITEMS) {
+  // step 0: perform greedy algorithm until there is no more items left to sort
+  while (boxItems.length > 0) {
+    // step 1: set color and count variable based on color with most items
+    let [color, count] = boxItems[0];
+
+    // step 2: find most empty box
+    let minIdx = 0;
+    for (let i = 0; i < boxContainer.length; i++) {
+      if (boxContainer[i].length < boxContainer[minIdx].length) {
+        minIdx = i;
+      }
+    }
+
+    // step 3: fill most empty box and update count
+    while (count > 0 && boxContainer[minIdx].length < MAX_ITEMS) {
+      boxContainer[minIdx].push(color);
+      boxItems[0][1]--;
+      count--;
+    }
+
+    // step 4: remove first element from list of items if count reaches 0
+    if (boxItems[0][1] === 0) {
+      boxItems.splice(0, 1);
+    }
+
+    // step 5: re-sort list of items to access color with most items left
+    boxItems.sort((a, b) => b[1] - a[1]);
+  }
+}
+
+function processBoxContainer(boxContainer, MAX_ITEMS) {
+  // step 0: change boxes from arrays to objects
+  let formattedBoxContainer = [];
+  for (const box of boxContainer) {
     let boxObj = {};
     for (const color of box) {
       boxObj[color] = boxObj[color] || 0;
       boxObj[color] += 1;
     }
-    formattedBoxes.push(boxObj);
+    formattedBoxContainer.push(boxObj);
   }
 
-  // iterate thru formattedBoxes to process each box with jsx and styling
-  let processedBoxes = [];
-  for (let i = 0; i < formattedBoxes.length; i++) {
-    const { blue, green, pink } = formattedBoxes[i];
+  // step 1: add proper jsx and styling to each box
+  let processedBoxContainer = [];
+  for (let i = 0; i < formattedBoxContainer.length; i++) {
+    const { blue, green, pink } = formattedBoxContainer[i];
 
     let renderBlue;
     if (blue > 1) {
@@ -113,9 +161,7 @@ export function processBoxes(boxes, MAX_ITEMS) {
         )}
       </div>
     );
-
-    processedBoxes.push(processedBox);
+    processedBoxContainer.push(processedBox);
   }
-
-  return processedBoxes;
+  return processedBoxContainer;
 }
