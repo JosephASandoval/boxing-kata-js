@@ -44,24 +44,44 @@ class Box {
       switch (this.size) {
         case 4:
           if (isPlural) {
-            display[color] = <h3>{count} replacement heads</h3>;
+            display[color] = (
+              <>
+                <i className={`color-${color} ri-focus-3-line`}></i>
+                <div>
+                  <h3>{count} replacement heads</h3>
+                </div>
+              </>
+            );
           } else {
-            display[color] = <h3>{count} replacement head</h3>;
+            display[color] = (
+              <>
+                <i className={`color-${color} ri-focus-3-line`}></i>
+                <div>
+                  <h3>{count} replacement head</h3>
+                </div>
+              </>
+            );
           }
           break;
         case 2:
           if (isPlural) {
             display[color] = (
               <>
-                <h3>{count} brushes</h3>
-                <h3>{count} replacement heads</h3>
+                <i className={`color-${color} ri-focus-3-line`}></i>
+                <div>
+                  <h3>{count} brushes</h3>
+                  <h3>{count} replacement heads</h3>
+                </div>
               </>
             );
           } else {
             display[color] = (
               <>
-                <h3>{count} brush</h3>
-                <h3>{count} replacement head</h3>
+                <i className={`color-${color} ri-focus-3-line`}></i>
+                <div>
+                  <h3>{count} brush</h3>
+                  <h3>{count} replacement head</h3>
+                </div>
               </>
             );
           }
@@ -73,32 +93,12 @@ class Box {
 
     const processedBox = (
       <div key={key} className="box">
-        {display.blue ? (
-          <>
-            <i className={`color-blue ri-focus-3-line`}></i>
-            <div>{display.blue}</div>
-          </>
-        ) : (
-          ""
-        )}
-        {display.green ? (
-          <>
-            <i className={`color-green ri-focus-3-line`}></i>
-            <div>{display.green}</div>
-          </>
-        ) : (
-          ""
-        )}
-        {display.pink ? (
-          <>
-            <i className={`color-pink ri-focus-3-line`}></i>
-            <div>{display.pink}</div>
-          </>
-        ) : (
-          ""
-        )}
+        {display.blue}
+        {display.green}
+        {display.pink}
       </div>
     );
+
     return processedBox;
   }
 }
