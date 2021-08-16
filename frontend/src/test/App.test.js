@@ -24,7 +24,7 @@ test("test fillBoxContainer", () => {
   let boxContainer = new Array(numBoxes)
     .fill(null)
     .map(() => new Box(MAX_ITEMS));
-  fillBoxContainer(boxItems, boxContainer);
+  fillBoxContainer(boxItems, boxContainer, MAX_ITEMS);
   expect(boxContainer[0].content).toEqual(["blue", "blue", "pink"]);
   expect(boxContainer[1].content).toEqual(["green", "green"]);
 });
