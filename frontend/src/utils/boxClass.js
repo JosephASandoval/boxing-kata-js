@@ -96,6 +96,7 @@ class Box {
         {display.blue}
         {display.green}
         {display.pink}
+        {display.orange}
       </div>
     );
 

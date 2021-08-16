@@ -2,7 +2,7 @@ export const test = [
   {
     id: 2,
     name: "Anakin",
-    brush_color: "blue",
+    brush_color: "orange",
     primary_insured_id: null,
     contract_effective_date: "2018-01-01",
   },
