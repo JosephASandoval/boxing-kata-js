@@ -12,7 +12,7 @@ class Box {
     return this.content.length;
   }
 
-  get colorCount() {
+  get itemsObj() {
     let counts = {};
     for (const color of this.content) {
       counts[color] = counts[color] || 0;
@@ -22,8 +22,7 @@ class Box {
   }
 
   get complexity() {
-    let counts = this.colorCount;
-    let numColors = Object.keys(counts).length;
+    let numColors = Object.keys(this.itemsObj).length;
     return numColors;
   }
 
@@ -35,99 +34,65 @@ class Box {
   }
 
   processBox(key) {
-    const { blue, green, pink } = this.colorCount;
+    const itemsArr = Object.entries(this.itemsObj);
 
-    let renderBlue;
-    if (blue > 1) {
-      renderBlue =
-        this.size === 4 ? (
-          <h3>{blue} replacement heads</h3>
-        ) : (
-          <>
-            <h3>{blue} brushes</h3>
-            <h3>{blue} replacement heads</h3>
-          </>
-        );
-    } else if (blue === 1) {
-      renderBlue =
-        this.size === 4 ? (
-          <h3>{blue} replacement head</h3>
-        ) : (
-          <>
-            <h3>{blue} brush</h3>
-            <h3>{blue} replacement head</h3>
-          </>
-        );
-    }
+    let display = {};
+    for (const item of itemsArr) {
+      const [color, count] = item;
+      let isPlural = count > 1 ? true : false;
 
-    let renderGreen;
-    if (green > 1) {
-      renderGreen =
-        this.size === 4 ? (
-          <h3>{green} replacement heads</h3>
-        ) : (
-          <>
-            <h3>{green} brushes</h3>
-            <h3>{green} replacement heads</h3>
-          </>
-        );
-    } else if (green === 1) {
-      renderGreen =
-        this.size === 4 ? (
-          <h3>{green} replacement head</h3>
-        ) : (
-          <>
-            <h3>{green} brush</h3>
-            <h3>{green} replacement head</h3>
-          </>
-        );
-    }
-
-    let renderPink;
-    if (pink > 1) {
-      renderPink =
-        this.size === 4 ? (
-          <h3>{pink} replacement heads</h3>
-        ) : (
-          <>
-            <h3>{pink} brushes</h3>
-            <h3>{pink} replacement heads</h3>
-          </>
-        );
-    } else if (pink === 1) {
-      renderPink =
-        this.size === 4 ? (
-          <h3>{pink} replacement head</h3>
-        ) : (
-          <>
-            <h3>{pink} brush</h3>
-            <h3>{pink} replacement head</h3>
-          </>
-        );
+      switch (this.size) {
+        case 4:
+          if (isPlural) {
+            display[color] = <h3>{count} replacement heads</h3>;
+          } else {
+            display[color] = <h3>{count} replacement head</h3>;
+          }
+          break;
+        case 2:
+          if (isPlural) {
+            display[color] = (
+              <>
+                <h3>{count} brushes</h3>
+                <h3>{count} replacement heads</h3>
+              </>
+            );
+          } else {
+            display[color] = (
+              <>
+                <h3>{count} brush</h3>
+                <h3>{count} replacement head</h3>
+              </>
+            );
+          }
+          break;
+        default:
+          break;
+      }
     }
 
     const processedBox = (
       <div key={key} className="box">
-        {renderBlue ? (
+        {display.blue ? (
           <>
             <i className={`color-blue ri-focus-3-line`}></i>
-            <div>{renderBlue}</div>
+            <div>{display.blue}</div>
           </>
         ) : (
           ""
         )}
-        {renderGreen ? (
+        {display.green ? (
           <>
             <i className={`color-green ri-focus-3-line`}></i>
-            <div>{renderGreen}</div>
+            <div>{display.green}</div>
           </>
         ) : (
           ""
         )}
-        {renderPink ? (
+        {display.pink ? (
           <>
             <i className={`color-pink ri-focus-3-line`}></i>
-            <div>{renderPink}</div>
+            <div>{display.pink}</div>
           </>
         ) : (
           ""
