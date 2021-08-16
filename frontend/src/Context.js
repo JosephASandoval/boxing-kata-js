@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { dataURL } from "./data/dataURL";
+// import { test } from "./data/test";
 
 const Context = React.createContext();
 
@@ -13,10 +14,12 @@ function ContextProvider({ children }) {
     fetch(dataURL)
       .then((res) => res.json())
       .then((data) => setFamily(data))
-      .catch((err) =>
-        console.log("Error: Could not receive family preferences")
-      );
+      .catch(() => console.log("Error: Could not receive family preferences"));
   }, []);
+
+  // useEffect(() => {
+  //   setFamily(test);
+  // }, []);
 
   useEffect(() => {
     const numFamily = family.length;
